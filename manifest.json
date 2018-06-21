@@ -1,0 +1,10 @@
+{
+    "name"        : "oui_player_provider",
+    "description" : "Extension base for oui_player v2+",
+    "version"     : "1.0.0-dev",
+    "type"        : 1,
+    "author"      : "Nicolas Morand",
+    "author_uri"  : "http://github.com/NicolasGraph",
+    "order"       : 3,
+    "flags"       : 0
+}
