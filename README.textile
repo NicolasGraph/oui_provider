@@ -1,0 +1,88 @@
+h1. oui_player_provider (formerly oui_video)
+
+h2. Introduction
+
+Extension base oui_player v2+.
+See oui_player"oui_player":https://github.com/NicolasGraph/oui_player for more informations.
+
+p(alert-block information). %(ui-icon ui-icon-info).% This plugin does not use oembed, it builds iframe embedding codes and HTML5 players by its own without any external request for better performances.
+
+h3. Plugin requirements
+
+oui_player's minimum requirements:
+
+* "Textpattern CMS":http://textpattern.com/ 4.6+;
+* "oui_player":https://github.com/NicolasGraph/oui_player v2+;
+* Any of the above provider related extension.
+
+h2. Plugin management
+
+h3. Installation
+
+h4. From the admin interface
+
+Follow the below instructions before or after installing the wanted oui_player extensions:
+
+# "Download":https://github.com/NicolasGraph/oui_player/releases the compiled plugin file or the source to compile a customized file.
+# Paste the content of the compiled plugin file under the "Admin > Plugins":?event=plugin tab and click the _Upload_ button.
+# Confirm the plugin install by clicking the _Install_ button on the plugin preview page.
+# Enable the plugin.
+
+Once the plugin and its extensions enabled, you will need to complete the setup by clicking _Options_ or visiting your "Admin > Preferences":?event=prefs#prefs_group_oui_player tab.
+This last step need to be repeated each time you add or remove one or more oui_player extensions to update the plugin preferences.
+
+h4. Via Composer
+
+After "installing Composer":https://getcomposer.org/doc/00-intro.md…
+
+# Target your project directory:
+@$ cd /path/to/your/textpattern/installation/dir@
+# If it's not already done, lock your version of Txp:
+@$ composer require textpattern/lock:4.6.2@, where @4.6.2@ is the Txp version in use.
+# Install oui_player:
+@$ composer require oui/oui_player@
+# Connect to the Txp admin interface and click _Options_ or visit your "Admin > Preferences":?event=prefs#prefs_group_oui_player tab to fill the plugin prefs.
+
+h3. Update
+
+h4. From the admin interface
+
+Follow the install instructions.
+If you are updating from v1.*, be sure to install all wanted extensions before to visit the "Admin > Preferences":?event=prefs#prefs_group_oui_player tab to keep your preference values untouched.
+
+h4. Via Composer
+
+bc. $ composer update oui/oui_player
+
+h3. Uninstall
+
+h4. From the admin interface
+
+# Check the box on the left of the plugin row under the "Admin > Plugins":?event=plugin.
+# open the select list at the bottom of the plugins table and choose _Delete_.
+# confirm the plugin deletion.
+
+h4. Via Composer
+
+bc. $ composer remove oui/oui_player
+
+h2. Credits
+
+h3. Author
+
+"Nicolas Morand":https://twitter.com/NicolasGraph
+_Thank you to the Textpattern community and the core team._
+
+h3. License
+
+This plugin is distributed under "GPL v2.0":https://www.gnu.org/licenses/gpl-2.0.txt.
+
+oui_player_provider version 1, Copyright (C) 2018 Nicolas Morand
+This Textpattern plugin comes with ABSOLUTELY "NO WARRANTY":https://www.gnu.org/licenses/gpl-2.0.html#section11.
+This is free software, and you are welcome to redistribute it "under certain conditions":https://www.gnu.org/licenses/gpl-2.0.html#SEC3.
+
+h3. Changelog
+
+* *oui_player_provider v1.0.0-beta* (2017-06-24)
+** Changed: now works as an extension base for oui_player.
+* *oui_player v1.3.1* (2017-07-13)
