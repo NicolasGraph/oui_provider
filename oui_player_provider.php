@@ -507,7 +507,7 @@ namespace Oui\Player {
                         preg_match("/(\D+)/", $height, $heightUnit);
 
                         if ($widthUnit && $heightUnit && $widthUnit === $heightUnit || !$widthUnit && !$heightUnit) {
-                            $pourcent = $height / $width * 100 . '%';
+                            $pourcent = (int) $height / (int) $width * 100 . '%';
                             $width = $height = '100%';
                         } elseif ($width === '100%' && !$heightUnit) {
                             $pourcent = $height . 'px';
