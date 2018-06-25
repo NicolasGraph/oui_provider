@@ -83,6 +83,6 @@ This is free software, and you are welcome to redistribute it "under certain con
 
 h3. Changelog
 
-* *oui_player_provider v1.0.0-beta* (2017-06-24)
+* *oui_player_provider v1.0.0-alpha* (2017-06-25)
 ** Changed: now works as an extension base for oui_player.
 * *oui_player v1.3.1* (2017-07-13)
