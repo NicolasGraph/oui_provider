@@ -5,7 +5,7 @@
  * an extendable plugin to easily embed
  * customizable players in Textpattern CMS.
  *
- * https://github.com/NicolasGraph/oui_player_abcnews
+ * https://github.com/NicolasGraph/oui_player_provider
  *
  * Copyright (C) 2018 Nicolas Morand
  *
