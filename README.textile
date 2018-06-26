@@ -1,4 +1,4 @@
-h1. oui_player_provider (formerly oui_video)
+h1. oui_player_provider
 
 h2. Introduction
 
