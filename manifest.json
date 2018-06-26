@@ -1,5 +1,5 @@
 {
-    "name"        : "oui_player_provider",
+    "name"        : "oui_provider",
     "description" : "Extension base for oui_player v2+",
     "version"     : "1.0.0-BETA1",
     "type"        : 1,

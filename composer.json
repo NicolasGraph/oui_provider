@@ -1,5 +1,5 @@
 {
-    "name": "nicolasgraph/oui_player_provider",
+    "name": "nicolasgraph/oui_provider",
     "description": "Extension base for oui_player v2+",
     "keywords": [
         "textpattern",
@@ -22,7 +22,7 @@
         "vine",
         "youtube"
     ],
-    "homepage": "https://github.com/NicolasGraph/oui_player_provider",
+    "homepage": "https://github.com/NicolasGraph/oui_provider",
     "license": "GPL-2.0-only",
     "type": "textpattern-plugin",
     "authors": [
@@ -33,8 +33,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/NicolasGraph/oui_player_provider/issues",
-        "source": "https://github.com/NicolasGraph/oui_player_provider"
+        "issues": "https://github.com/NicolasGraph/oui_provider/issues",
+        "source": "https://github.com/NicolasGraph/oui_provider"
     },
     "require": {
         "textpattern/lock": "^4.6",
