@@ -84,5 +84,6 @@ This is free software, and you are welcome to redistribute it "under certain con
 h3. Changelog
 
 * *oui_provider v1.0.0-BETA1* (2017-06-26)
-** Changed: now works as an extension base for oui_player.
+** Changed: now works as an extension base for oui_player;
+** Added: manage responsive embedding.
 * *oui_player v1.3.1* (2017-07-13)
