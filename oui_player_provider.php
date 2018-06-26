@@ -501,8 +501,8 @@ namespace Oui\Player {
             if ($responsive) {
                 if (!empty($ratio)) {
                     $width = $height = '100%';
-                } elseif ($width) {
-                    if (!empty($height)) {
+                } elseif (isset($height)) {
+                    if ($width && $height) {
                         preg_match("/(\D+)/", $width, $widthUnit);
                         preg_match("/(\D+)/", $height, $heightUnit);
 
@@ -513,18 +513,13 @@ namespace Oui\Player {
                             $pourcent = $height . 'px';
                         }
                     } else {
-                        $width = '100%';
-                    }
-                }
-            } else {
-                if (!$width && empty($height)) {
-                    if ($responsive && !empty($ratio)) {
-                        $width = '100%';
-                        $aspect = $width / $aspect;
-                    } else {
                         trigger_error(gtxt('undefined_player_size'));
                     }
-                } elseif (!$width || isset($height) && !$height) {
+                } else {
+                    $width = '100%';
+                }
+            } else {
+                if (isset($height) && (!$width || !$height)) {
                     if ($ratio) {
                         // Calculates the new width/height.
                         if ($width) {
