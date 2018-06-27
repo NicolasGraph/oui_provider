@@ -570,7 +570,7 @@ namespace Oui\Player {
             if (!empty($ratio)) {
                 preg_match("/(\d+):(\d+)/", $ratio, $matches);
 
-                if ($matches && $matches[1]!=0 && $matches[2]!=0) {
+                if ($matches && $matches[1] != 0 && $matches[2] != 0) {
                     $aspect = $matches[1] / $matches[2]; // Get the ratio as a decimal.
                 } else {
                     trigger_error(gtxt('invalid_player_ratio'));
