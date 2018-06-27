@@ -714,7 +714,7 @@ namespace Oui\Player {
                 '<iframe src="%s"%s%s %s %s></iframe>',
                 $this->getPlaySrc(),
                 !$width ? '' : ' width="' . $width . '"',
-                !$height ? '' : '  height="' . $height . '"',
+                !$height ? '' : ' height="' . $height . '"',
                 $style,
                 'allowfullscreen'
             );
