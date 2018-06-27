@@ -572,7 +572,6 @@ namespace Oui\Player {
 
                 if ($matches && $matches[1]!=0 && $matches[2]!=0) {
                     $aspect = $matches[1] / $matches[2]; // Get the ratio as a decimal.
-                    $pourcent = 1 / $aspect * 100 . '%'; // Get the height as a pourcentage of the width for responsive rendering.
                 } else {
                     trigger_error(gtxt('invalid_player_ratio'));
                 }
@@ -583,6 +582,7 @@ namespace Oui\Player {
 
             if ($responsive) {
                 if (!empty($ratio)) {
+                    $pourcent = 1 / $aspect * 100 . '%';
                     $width = $height = '100%';
                 } elseif (isset($height)) {
                     if ($width && $height) {
