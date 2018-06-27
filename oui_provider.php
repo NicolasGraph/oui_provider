@@ -585,13 +585,13 @@ namespace Oui\Player {
                     $width = '100%';
                 } elseif (isset($height)) {
                     if ($width && $height) {
-                        preg_match("/(\D+)/", $width, $widthUnit);
-                        preg_match("/(\D+)/", $height, $heightUnit);
+                        preg_match("/(\D+)/", $width, $wUnit);
+                        preg_match("/(\D+)/", $height, $hUnit);
 
-                        if ($widthUnit && $heightUnit && $widthUnit === $heightUnit || !$widthUnit && !$heightUnit) {
+                        if ($wUnit && $hUnit && $wUnit === $hUnit || !$wUnit && !$hUnit) {
                             $height = (int) $height / (int) $width * 100 . '%';
                             $width = '100%';
-                        } elseif ($width === '100%' && !$heightUnit) {
+                        } elseif ($width === '100%' && !$hUnit) {
                             $height = $height . 'px';
                         }
                     } else {
