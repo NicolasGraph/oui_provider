@@ -552,7 +552,7 @@ namespace Oui\Player {
             // Get dimensions from attributes, or fallback to preferences.
             $config = $this->getConfig();
 
-            foreach (self::getDims() as $dim => $infos) {
+            foreach (self::getDims() as $dim => $value) {
                 $pref = get_pref(strtolower(str_replace('\\', '_', get_class($this))) . '_' . $dim);
                 $att = isset($config[$dim]) ? $config[$dim] : '';
 
