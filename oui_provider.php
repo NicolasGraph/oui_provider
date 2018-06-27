@@ -559,9 +559,9 @@ namespace Oui\Player {
                 if ($att === true || $att === 'false') {
                     $$dim = 0;
                 } elseif ($att) {
-                    $$dim = $att;
+                    $$dim = preg_replace('/\s+/', '', $att);
                 } else {
-                    $$dim = $pref;
+                    $$dim = preg_replace('/\s+/', '', $pref);
                 }
             }
 
