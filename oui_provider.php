@@ -592,7 +592,7 @@ namespace Oui\Player {
                             $height = (int) $height / (int) $width * 100 . '%';
                             $width = '100%';
                         } elseif ($width === '100%' && !$hUnit) {
-                            $height = $height . 'px';
+                            $height .= 'px';
                         }
                     } else {
                         trigger_error(gtxt('undefined_player_size'));
