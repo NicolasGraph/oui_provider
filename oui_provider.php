@@ -565,6 +565,15 @@ namespace Oui\Player {
                 }
             }
 
+            // Separate values and units.
+            preg_match("/(\D+)/", $width, $wUnit);
+            $width = (int) $width;
+
+            if (isset($height)) {
+                preg_match("/(\D+)/", $height, $hUnit);
+                $height = (int) $height;
+            }
+
             // Work out the provided ratio.
             if (!empty($ratio)) {
                 preg_match("/(\d+):(\d+)/", $ratio, $matches);
@@ -585,14 +594,9 @@ namespace Oui\Player {
                     $width = '100%';
                 } elseif (isset($height)) {
                     if ($width && $height) {
-                        preg_match("/(\D+)/", $width, $wUnit);
-                        preg_match("/(\D+)/", $height, $hUnit);
-
                         if ($wUnit && $hUnit && $wUnit === $hUnit || !$wUnit && !$hUnit) {
-                            $height = (int) $height / (int) $width * 100 . '%';
+                            $height = $height / $width * 100 . '%';
                             $width = '100%';
-                        } elseif ($width === '100%' && !$hUnit) {
-                            $height .= 'px';
                         }
                     } else {
                         trigger_error(gtxt('undefined_player_size'));
@@ -604,16 +608,23 @@ namespace Oui\Player {
                 if (isset($height) && (!$width || !$height)) {
                     if ($ratio) {
                         if ($width) {
-                            preg_match("/(\D+)/", $width, $unit);
-                            $height = (int) $width / $aspect . ($unit ? $unit[0] : '');
+                            $height = $width / $aspect;
+                            $wUnit ? $height .= $wUnit[0] : '';
                         } else {
-                            preg_match("/(\D+)/", $height, $unit);
-                            $width = (int) $height * $aspect . ($unit ? $unit[0] : '');
+                            $width = $height * $aspect;
+                            $hUnit ? $width .= $hUnit[0] : '';
                         }
                     } else {
                         trigger_error(gtxt('undefined_player_size'));
                     }
                 }
+            }
+
+            // Re-append unit if needed.
+            is_int($width) && $wUnit ? $width .= $wUnit[0] : '';
+
+            if (isset($height)) {
+                is_int($height) && $hUnit ? $height .= $hUnit[0] : '';
             }
 
             return compact('width', 'height');
@@ -685,12 +696,12 @@ namespace Oui\Player {
                 $width = $height = false;
                 $wraptag or $wraptag = 'div';
             } else {
-                if (preg_match("/(\D+)/", $width, $unit)) {
+                if (is_string($width)) {
                     $style .= '; width:' . $width;
                     $width = false;
                 }
 
-                if (preg_match("/(\D+)/", $height, $unit)) {
+                if (is_string($height)) {
                     $style .= '; height:' . $height;
                     $height = false;
                 }
