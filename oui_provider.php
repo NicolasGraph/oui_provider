@@ -418,8 +418,7 @@ namespace Oui\Player {
 
             foreach ($merge_prefs as $pref => $options) {
                 $options['group'] = strtolower(str_replace('\\', '_', get_called_class()));
-                $pref = $options['group'] . '_' . $pref;
-                $prefs[$pref] = $options;
+                $prefs[$options['group'] . '_' . $pref] = $options;
             }
 
             return $prefs;
@@ -439,8 +438,7 @@ namespace Oui\Player {
 
             // Replace any underscore with an hyphen.
             foreach ($atts as $att => $options) {
-                $att = str_replace('-', '_', $att);
-                $get_atts[$att] = '';
+                $get_atts[str_replace('-', '_', $att)] = '';
             }
 
             return $get_atts;
