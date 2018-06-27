@@ -626,7 +626,8 @@ namespace Oui\Player {
             is_int($width) && $wUnit && $wUnit !== 'px' ? $width .= $wUnit : '';
 
             if (isset($height)) {
-                is_int($height) && $hUnit && $hUnit !== 'px' ? $height .= $hUnit : '';
+                $responsive && !$hUnit ? $hUnit = 'px' : '';
+                is_int($height) && $hUnit && ($responsive || $hUnit !== 'px') ? $height .= $hUnit : '';
             }
 
             return compact('width', 'height');
