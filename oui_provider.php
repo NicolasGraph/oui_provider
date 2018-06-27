@@ -604,13 +604,11 @@ namespace Oui\Player {
                 if (isset($height) && (!$width || !$height)) {
                     if ($ratio) {
                         if ($width) {
-                            $height = $width / $aspect;
                             preg_match("/(\D+)/", $width, $unit);
-                            isset($unit[0]) ? $height .= $unit[0] : '';
+                            $height = $width / $aspect . (isset($unit[0]) ? $unit[0] : '');
                         } else {
-                            $width = $height * $aspect;
                             preg_match("/(\D+)/", $height, $unit);
-                            isset($unit[0]) ? $width .= $unit[0] : '';
+                            $width = $height * $aspect . (isset($unit[0]) ? $unit[0] : '');
                         }
                     } else {
                         trigger_error(gtxt('undefined_player_size'));
