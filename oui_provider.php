@@ -543,9 +543,8 @@ namespace Oui\Player {
 
         /**
          * Get the player size.
-         * Height and ratio can be not set (i.e. HTML5 audio player).
          *
-         * @return array Width, (height) and (pourcent) keys and their values.
+         * @return array Width and height keys and their values — Height could be not set (i.e. HTML5 audio player).
          */
 
         protected function getSize()
@@ -582,18 +581,18 @@ namespace Oui\Player {
 
             if ($responsive) {
                 if (!empty($ratio)) {
-                    $pourcent = 1 / $aspect * 100 . '%';
-                    $width = $height = '100%';
+                    $height = 1 / $aspect * 100 . '%';
+                    $width = '100%';
                 } elseif (isset($height)) {
                     if ($width && $height) {
                         preg_match("/(\D+)/", $width, $widthUnit);
                         preg_match("/(\D+)/", $height, $heightUnit);
 
                         if ($widthUnit && $heightUnit && $widthUnit === $heightUnit || !$widthUnit && !$heightUnit) {
-                            $pourcent = (int) $height / (int) $width * 100 . '%';
-                            $width = $height = '100%';
+                            $height = (int) $height / (int) $width * 100 . '%';
+                            $width = '100%';
                         } elseif ($width === '100%' && !$heightUnit) {
-                            $pourcent = $height . 'px';
+                            $height = $height . 'px';
                         }
                     } else {
                         trigger_error(gtxt('undefined_player_size'));
@@ -619,7 +618,7 @@ namespace Oui\Player {
                 }
             }
 
-            return compact('width', 'height', 'pourcent');
+            return compact('width', 'height');
         }
 
         /**
@@ -683,7 +682,8 @@ namespace Oui\Player {
 
             if ($this->getResponsive()) {
                 $style .= ' style="position: absolute; top: 0; left: 0" ';
-                $wrapstyle .= 'style="position: relative; padding-bottom:' . $pourcent . '; height: 0; overflow: hidden"';
+                $wrapstyle .= 'style="position: relative; padding-bottom:' . $height . '; height: 0; overflow: hidden"';
+                $height = '100%';
                 $wraptag or $wraptag = 'div';
             }
 
