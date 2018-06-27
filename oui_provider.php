@@ -567,10 +567,12 @@ namespace Oui\Player {
 
             // Separate values and units.
             preg_match("/(\D+)/", $width, $wUnit);
+            $wUnit ? $wUnit = $wUnit[0] : '';
             $width = (int) $width;
 
             if (isset($height)) {
                 preg_match("/(\D+)/", $height, $hUnit);
+                $hUnit ? $hUnit = $hUnit[0] : '';
                 $height = (int) $height;
             }
 
@@ -609,10 +611,10 @@ namespace Oui\Player {
                     if ($ratio) {
                         if ($width) {
                             $height = $width / $aspect;
-                            $wUnit ? $height .= $wUnit[0] : '';
+                            $wUnit ? $height .= $wUnit : '';
                         } else {
                             $width = $height * $aspect;
-                            $hUnit ? $width .= $hUnit[0] : '';
+                            $hUnit ? $width .= $hUnit : '';
                         }
                     } else {
                         trigger_error(gtxt('undefined_player_size'));
@@ -621,10 +623,10 @@ namespace Oui\Player {
             }
 
             // Re-append unit if needed.
-            is_int($width) && $wUnit ? $width .= $wUnit[0] : '';
+            is_int($width) && $wUnit && $wUnit !== 'px' ? $width .= $wUnit : '';
 
             if (isset($height)) {
-                is_int($height) && $hUnit ? $height .= $hUnit[0] : '';
+                is_int($height) && $hUnit && $hUnit !== 'px' ? $height .= $hUnit : '';
             }
 
             return compact('width', 'height');
