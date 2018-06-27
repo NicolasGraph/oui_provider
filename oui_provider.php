@@ -34,41 +34,45 @@ namespace Oui\Player {
     abstract class Provider
     {
         /**
-         * The value provided through the 'play'
-         * attribute value of the plugin tag.
+         * The provider name set from the class name.
          *
          * @var string
+         * @see setProvider(), getProvider().
          */
 
         protected static $provider;
 
         /**
-         * The value provided through the 'play'
-         * attribute value of the plugin tag.
+         * The value provided through the play attribute.
          *
          * @var string
+         * @see setPlay(), getPlay().
          */
 
         protected $play;
 
         /**
-         * Infos.
-         *
          * @var array
+         * @see setInfos(), getInfos().
          */
 
         protected $infos;
 
         /**
-         * Associative array attributes in use and their values.
+         * Attributes and their values.
          *
          * @var array
+         * @see setConfig(), getConfig().
          */
 
         protected $config;
 
         /**
-         * Associative array of 'play' value(s) and their.
+         * Associative array of different media types related values.
+         * scheme: regex to check against a media URL/filename;
+         * id: index of the media ID in the matches;
+         * glue: an optional string to append to the first ID if multiple ID's can be macthed in the same URL;
+         * prefix: an optional string to prepend to the current ID.
          *
          * @var array
          * @example
@@ -84,12 +88,7 @@ namespace Oui\Player {
          *         'prefix' => 'list=',
          *     ),
          * );
-         *
-         * Where 'video' and 'list' are used to define the 'type' key of the $infos property
-         * when an URL match the regular expression defined as the 'scheme'.
-         * 'id' stores the index of the string to get from the matches.
-         * If set, the 'glue' key allows to test multiple schemes and stick ID's with its value.
-         * 'prefix' can defines an ID prefix.
+         * @see getPatterns(), setInfos().
          */
 
         protected static $patterns = array();
@@ -98,6 +97,8 @@ namespace Oui\Player {
          * The player base path.
          *
          * @var string
+         * @example '//www.youtube-nocookie.com/'
+         * @see getSrc().
          */
 
         protected static $src;
@@ -106,6 +107,8 @@ namespace Oui\Player {
          * URL of a script to embed.
          *
          * @var string
+         * @example 'https://platform.vine.co/static/scripts/embed.js'
+         * @see getScript(), embedScript(), $scriptEmbedded.
          */
 
         protected static $script;
@@ -114,14 +117,16 @@ namespace Oui\Player {
          * Whether the script is already embed or not.
          *
          * @var bool
+         * @see embedScript(), getScriptEmbedded().
          */
 
         protected static $scriptEmbedded = false;
 
         /**
-         * Default player size.
+         * Initial player size.
          *
          * @var array
+         * @see getDims(), getSize().
          */
 
         protected static $dims = array(
@@ -152,6 +157,7 @@ namespace Oui\Player {
          * Where 'size' is a player parameter and 'large' is its default value.
          * 'force' allows to set the parameter even if its value is the default one.
          * The 'valid' key accept an array of values or a type of values as an HTML input type.
+         * @see getParams(), getPlayerParams().
          */
 
         protected static $params = array();
@@ -160,6 +166,7 @@ namespace Oui\Player {
          * Strings sticking different player URL parts.
          *
          * @var array
+         * @see setGlue(), getGlue(), resetGlue(), getPlaySrc().
          */
 
         protected static $glue = array('/', '?', '&amp;');
@@ -168,6 +175,7 @@ namespace Oui\Player {
          * Caches the class instance.
          *
          * @var object
+         * @see getInstance().
          */
 
         private static $instance = null;
@@ -189,12 +197,19 @@ namespace Oui\Player {
 
         /**
          * Constructor.
+         * Set the $provider property.
          */
 
         protected function __construct()
         {
             self::setProvider();
         }
+
+        /**
+         * $responsive property getter.
+         *
+         * @return bool
+         */
 
         protected function getResponsive() {
             $att = $this->getConfig('responsive');
@@ -203,9 +218,9 @@ namespace Oui\Player {
         }
 
         /**
-         * Gets the play property.
+         * $play property setter.
          *
-         * @throws \Exception
+         * @return object $this.
          */
 
         public function setPlay($value, $fallback = false)
@@ -221,7 +236,9 @@ namespace Oui\Player {
         }
 
         /**
-         * Gets the play property.
+         * $play property getter.
+         *
+         * @return array
          */
 
         protected function getPlay()
@@ -230,7 +247,9 @@ namespace Oui\Player {
         }
 
         /**
-         * Gets the play property.
+         * $config property setter.
+         *
+         * @return object $this
          */
 
         public function setConfig($value)
@@ -240,10 +259,21 @@ namespace Oui\Player {
             return $this;
         }
 
+        /**
+         * $config property getter.
+         *
+         * @param  string $att Attribute name.
+         * @return mixed       Attribute value or the $config full array.
+         */
+
         protected function getConfig($att = null)
         {
             return $att ? $this->config[$att] : $this->config;
         }
+
+        /**
+         * $provider property setter.
+         */
 
         protected static function setProvider()
         {
@@ -251,7 +281,9 @@ namespace Oui\Player {
         }
 
         /**
-         * Gets the class name as the provider name.
+         * $provider property getter.
+         *
+         * @return array
          */
 
         public static function getProvider()
@@ -260,6 +292,13 @@ namespace Oui\Player {
 
             return array(static::$provider);
         }
+
+        /**
+         * $script property getter.
+         *
+         * @param  bool  $wrap Whether to wrap to embed the script URL in a script tag or not;
+         * @return mixed       URL or HTML script tag.
+         */
 
         protected static function getScript($wrap = false)
         {
@@ -270,35 +309,79 @@ namespace Oui\Player {
             return false;
         }
 
+        /**
+         * $scriptEmbedded property getter.
+         *
+         * @return bool
+         */
+
         protected static function getScriptEmbedded()
         {
             return static::$scriptEmbedded;
         }
+
+        /**
+         * $dims property getter.
+         *
+         * @return array
+         */
 
         protected static function getDims()
         {
             return static::$dims;
         }
 
+        /**
+         * $params property getter.
+         *
+         * @return array
+         */
+
         protected static function getParams()
         {
             return static::$params;
         }
+
+        /**
+         * $patterns property getter.
+         *
+         * @return array
+         */
 
         protected static function getPatterns()
         {
             return static::$patterns;
         }
 
+        /**
+         * $src property getter.
+         *
+         * @return string
+         */
+
         protected static function getSrc()
         {
             return static::$src;
         }
 
+        /**
+         * $glue property getter.
+         *
+         * @param  integer $i     Index of the $glue value to get;
+         * @return mixed          Value of the $glue item as string, or the $glue array.
+         */
+
         protected static function getGlue($i = null)
         {
             return $i ? static::$glue[$i] : static::$glue;
         }
+
+        /**
+         * $glue property setter.
+         *
+         * @param integer $i     Index of the $glue value to set;
+         * @param string  $value Value of the $glue item.
+         */
 
         protected static function setGlue($i, $value)
         {
@@ -306,7 +389,7 @@ namespace Oui\Player {
         }
 
         /**
-         * Embeds the provider script.
+         * Embed the provider script.
          */
 
         public function embedScript()
@@ -323,7 +406,7 @@ namespace Oui\Player {
         }
 
         /**
-         * Collects provider prefs.
+         * Collect provider prefs.
          *
          * @param  array $prefs Prefs collected provider after provider.
          * @return array Collected prefs merged with ones already provided.
@@ -343,17 +426,18 @@ namespace Oui\Player {
         }
 
         /**
-         * Get tag attributes.
+         * Get a tag attributes.
          *
          * @param  string $tag      The plugin tag.
          * @param  array  $get_atts Stores attributes provider after provider.
-         * @return array  Attributes
+         * @return array
          */
 
         public static function getAtts($tag, $get_atts)
         {
             $atts = array_merge(self::getDims(), self::getParams());
 
+            // Replace any underscore with an hyphen.
             foreach ($atts as $att => $options) {
                 $att = str_replace('-', '_', $att);
                 $get_atts[$att] = '';
@@ -363,9 +447,10 @@ namespace Oui\Player {
         }
 
         /**
-         * Sets the current media(s) infos.
+         * Set the current media(s) infos.
          *
-         * @return array The current media(s) infos.
+         * @param  bool  $fallback Whether to set fallback $infos values or not.
+         * @return array
          */
 
         public function setInfos($fallback = false)
@@ -378,6 +463,7 @@ namespace Oui\Player {
                 if ($notId) {
                     $glue = null;
 
+                    // Check the URL or filename against defined $patterns property values.
                     foreach (self::getPatterns() as $pattern => $options) {
                         if (preg_match($options['scheme'], $play, $matches)) {
                             $prefix = isset($options['prefix']) ? $options['prefix'] : '';
@@ -388,7 +474,7 @@ namespace Oui\Player {
                                     'type' => $pattern,
                                 );
 
-                                // Bandcamp and Youtube accept multiple matches.
+                                // Bandcamp and Youtube, et least, accept multiple matches.
                                 if (!isset($options['glue'])) {
                                     break;
                                 } else {
@@ -417,9 +503,9 @@ namespace Oui\Player {
         }
 
         /**
-         * Gets the infos property; set it if necessary.
+         * Get the infos property.
          *
-         * @return array An associative array of
+         * @return array
          */
 
         public function getInfos()
@@ -428,7 +514,7 @@ namespace Oui\Player {
         }
 
         /**
-         * Gets player parameters in in use
+         * Get the modified player parameters
          * from the plugin tag attributes
          * or from the plugin prefs.
          *
@@ -446,13 +532,11 @@ namespace Oui\Player {
                 $att = str_replace('-', '_', $param);
                 $value = isset($config[$att]) ? $config[$att] : '';
 
-                // Adds attributes values in use or modified prefs values as player parameters.
+                // Add defined attribute values or modified preference values as player parameters.
                 if ($value === '' && ($pref !== $default || isset($infos['force']))) {
-                    // Removes # from the color pref as a color type is used for the pref input.
-                    $params[] = $param . '=' . str_replace('#', '', $pref);
+                    $params[] = $param . '=' . str_replace('#', '', $pref); // Remove the hash from the color pref as a color type is used for the pref input.
                 } elseif ($value !== '') {
-                    // Removes the # in the color attribute just in case…
-                    $params[] = $param . '=' . str_replace('#', '', $value);
+                    $params[] = $param . '=' . str_replace('#', '', $value); // Remove the hash in the color attribute just in case…
                 }
             }
 
@@ -460,15 +544,15 @@ namespace Oui\Player {
         }
 
         /**
-         * Gets the player size
-         * from the plugin tag attributes
-         * or from the plugin prefs.
+         * Get the player size.
+         * Height and ratio can be not set (i.e. HTML5 audio player).
          *
-         * @return array Player size.
+         * @return array Width, (height) and (pourcent) keys and their values.
          */
 
         protected function getSize()
         {
+            // Get dimensions from attributes, or fallback to preferences.
             $config = $this->getConfig();
 
             foreach (self::getDims() as $dim => $infos) {
@@ -484,18 +568,19 @@ namespace Oui\Player {
                 }
             }
 
+            // Work out the provided ratio.
             if (!empty($ratio)) {
-                // Works out the aspect ratio.
                 preg_match("/(\d+):(\d+)/", $ratio, $matches);
 
                 if ($matches && $matches[1]!=0 && $matches[2]!=0) {
-                    $aspect = $matches[1] / $matches[2];
-                    $pourcent = 1 / $aspect * 100 . '%';
+                    $aspect = $matches[1] / $matches[2]; // Get the ratio as a decimal.
+                    $pourcent = 1 / $aspect * 100 . '%'; // Get the height as a pourcentage of the width for responsive rendering.
                 } else {
                     trigger_error(gtxt('invalid_player_ratio'));
                 }
             }
 
+            // Calculate palyer width and/or height.
             $responsive = $this->getResponsive();
 
             if ($responsive) {
@@ -521,12 +606,9 @@ namespace Oui\Player {
             } else {
                 if (isset($height) && (!$width || !$height)) {
                     if ($ratio) {
-                        // Calculates the new width/height.
                         if ($width) {
                             $height = $width / $aspect;
-                            // Has unit?
                             preg_match("/(\D+)/", $width, $unit);
-                            // Adds unit if it exists.
                             isset($unit[0]) ? $height .= $unit[0] : '';
                         } else {
                             $width = $height * $aspect;
@@ -543,7 +625,7 @@ namespace Oui\Player {
         }
 
         /**
-         * Whether a provided URL to play matches a provider URL scheme or not.
+         * Whether the $play property value is a provider related URL or not.
          *
          * @return bool
          */
@@ -553,29 +635,40 @@ namespace Oui\Player {
             return $this->getInfos();
         }
 
+        /**
+         * Build the player src value.
+         *
+         * @return string
+         */
+
         protected function getPlaySrc()
         {
             $play = $this->getInfos()[$this->getPlay()[0]]['play'];
             $glue = self::getGlue();
-            $src = self::getSrc() . $glue[0] . $play;
+            $src = self::getSrc() . $glue[0] . $play; // Stick player URL and ID.
+
+            // Stick defined player parameters.
             $params = $this->getPlayerParams();
 
             if (!empty($params)) {
-                $joint = strpos($src, $glue[1]) ? $glue[2] : $glue[1];
-                $src .= $joint . implode($glue[2], $params);
+                $joint = strpos($src, $glue[1]) ? $glue[2] : $glue[1]; // Avoid repeated glue elements (interrogation marks).
+                $src .= $joint . implode($glue[2], $params); // Stick.
             }
 
             return $src;
         }
 
         /**
-         * Generates the player.
+         * Generate the player.
          *
-         * @return string HTML
+         * @param  string $wraptag HTML wraptag name;
+         * @param  string $class   Class name to apply to the wraptag.
+         * @return HTML
          */
 
         public function getPlayer($wraptag = null, $class = null)
         {
+            // Embed the provider related $script if needed.
             if (self::getScript() && !self::getScriptEmbedded()) {
                 register_callback(array($this, 'embedScript'), 'textpattern_end');
                 static::$scriptEmbedded = true;
@@ -586,6 +679,7 @@ namespace Oui\Player {
 
             extract($dims);
 
+            // Define responsive related styles.
             $style = '';
             $wrapstyle = '';
 
@@ -595,6 +689,7 @@ namespace Oui\Player {
                 $wraptag or $wraptag = 'div';
             }
 
+            // Build the player code.
             $player = sprintf(
                 '<iframe src="%s" width="%s" height="%s"%s%s></iframe>',
                 $this->getPlaySrc(),
