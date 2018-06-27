@@ -682,17 +682,28 @@ namespace Oui\Player {
             if ($this->getResponsive()) {
                 $style .= '; position: absolute; top: 0; left: 0; width: 100%; height: 100%';
                 $wrapstyle .= 'style="position: relative; padding-bottom:' . $height . '; height: 0; overflow: hidden"';
-                $height = '100%';
+                $width = $height = false;
                 $wraptag or $wraptag = 'div';
+            } else {
+                if (preg_match("/(\D+)/", $width, $unit)) {
+                    $style .= '; width:' . $width;
+                    $width = false;
+                }
+
+                if (preg_match("/(\D+)/", $height, $unit)) {
+                    $style .= '; height:' . $height;
+                    $height = false;
+                }
             }
 
             $style .= '"';
 
             // Build the player code.
             $player = sprintf(
-                '<iframe src="%s"%s %s %s></iframe>',
+                '<iframe src="%s"%s%s %s %s></iframe>',
                 $this->getPlaySrc(),
-                $responsive ? '' : ' width="' . $width . '" height="' . $height . '"',
+                !$width ? '' : ' width="' . $width . '"',
+                !$height ? '' : '  height="' . $height . '"',
                 $style,
                 'allowfullscreen'
             );
