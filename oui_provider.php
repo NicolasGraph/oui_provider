@@ -676,7 +676,7 @@ namespace Oui\Player {
 
             // Define responsive related styles.
             $responsive = $this->getResponsive();
-            $style = ' style="border: none';
+            $style = 'style="border: none';
             $wrapstyle = '';
 
             if ($this->getResponsive()) {
@@ -690,12 +690,11 @@ namespace Oui\Player {
 
             // Build the player code.
             $player = sprintf(
-                '<iframe src="%s"%s%s%s%s></iframe>',
+                '<iframe src="%s"%s %s %s></iframe>',
                 $this->getPlaySrc(),
-                $responsive ? '' : ' width="' . $width . '"',
-                $responsive ? '' : ' height="' . $height . '"',
+                $responsive ? '' : ' width="' . $width . '" height="' . $height . '"',
                 $style,
-                ' allowfullscreen'
+                'allowfullscreen'
             );
 
             return ($wraptag) ? doTag($player, $wraptag, $class, $wrapstyle) : $player;
