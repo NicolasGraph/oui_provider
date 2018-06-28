@@ -77,13 +77,14 @@ h3. License
 
 This plugin is distributed under "GPL v2.0":https://www.gnu.org/licenses/gpl-2.0.txt.
 
-oui_provider version 1, Copyright (C) 2018 Nicolas Morand
+oui_provider version 1.0.0-BETA2, Copyright (C) 2018 Nicolas Morand
 This Textpattern plugin comes with ABSOLUTELY "NO WARRANTY":https://www.gnu.org/licenses/gpl-2.0.html#section11.
 This is free software, and you are welcome to redistribute it "under certain conditions":https://www.gnu.org/licenses/gpl-2.0.html#SEC3.
 
 h3. Changelog
 
-* *oui_provider v1.0.0-BETA1* (2017-06-26)
-** Changed: now works as an extension base for oui_player;
-** Added: manage responsive embedding.
+* *oui_provider v1.0.0-BETA2* (2017-06-28)
+** Added: HTML5 validation;
+** changed: now works as an extension base for oui_player;
+** added: manage responsive embedding.
 * *oui_player v1.3.1* (2017-07-13)

@@ -1,6 +1,6 @@
 {
     "name": "nicolasgraph/oui_provider",
-    "description": "Extension base for oui_player v2+",
+    "description": "Add media player providers support to oui_player v2+ for Textpattern CMS",
     "keywords": [
         "textpattern",
         "plugin",
