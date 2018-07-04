@@ -29,7 +29,7 @@
  * @package Oui\Player
  */
 
-namespace Oui\Player {
+namespace Oui {
 
     abstract class Provider
     {
@@ -172,35 +172,11 @@ namespace Oui\Player {
         protected static $glue = array('/', '?', '&amp;');
 
         /**
-         * Caches the class instance.
-         *
-         * @var object
-         * @see getInstance().
-         */
-
-        private static $instance = null;
-
-        /**
-         * Singleton.
-         */
-
-        public static function getInstance()
-        {
-            $class = get_called_class();
-
-            if (!isset(self::$instance[$class])) {
-                self::$instance[$class] = new static();
-            }
-
-            return self::$instance[$class];
-        }
-
-        /**
          * Constructor.
          * Set the $provider property.
          */
 
-        protected function __construct()
+        public function __construct()
         {
             self::setProvider();
         }
@@ -226,11 +202,7 @@ namespace Oui\Player {
         public function setPlay($value, $fallback = false)
         {
             $this->play = $value;
-            $infos = $this->getInfos();
-
-            if (!$infos || !array_key_exists($value, $infos)) {
-                $this->setInfos($fallback);
-            }
+            $this->getInfos($fallback);
 
             return $this;
         }
@@ -277,7 +249,7 @@ namespace Oui\Player {
 
         protected static function setProvider()
         {
-            static::$provider = substr(strrchr(get_called_class(), '\\'), 1);
+            static::$provider = strtolower(substr(strrchr(get_called_class(), '\\'), 1));
         }
 
         /**
@@ -290,7 +262,7 @@ namespace Oui\Player {
         {
             self::setProvider();
 
-            return array(static::$provider);
+            return static::$provider;
         }
 
         /**
@@ -417,7 +389,7 @@ namespace Oui\Player {
             $merge_prefs = array_merge(self::getDims(), self::getParams());
 
             foreach ($merge_prefs as $pref => $options) {
-                $options['group'] = strtolower(str_replace('\\', '_', get_called_class()));
+                $options['group'] = Player::getPlugin() . '_' . self::getProvider();
                 $prefs[$options['group'] . '_' . $pref] = $options;
             }
 
@@ -506,8 +478,12 @@ namespace Oui\Player {
          * @return array
          */
 
-        public function getInfos()
+        public function getInfos($fallback = false)
         {
+            if (!$this->infos || !array_key_exists($this->getPlay()[0], $this->infos)) {
+                $this->setInfos($fallback);
+            }
+
             return $this->infos;
         }
 
@@ -525,7 +501,7 @@ namespace Oui\Player {
             $params = array();
 
             foreach (self::getParams() as $param => $infos) {
-                $pref = get_pref(strtolower(str_replace('\\', '_', get_class($this))) . '_' . $param);
+                $pref = get_pref(Player::getPlugin() . '_' . self::getProvider() . '_' . $param);
                 $default = $infos['default'];
                 $att = str_replace('-', '_', $param);
                 $value = isset($config[$att]) ? $config[$att] : '';
@@ -652,7 +628,7 @@ namespace Oui\Player {
 
         protected function getPlaySrc()
         {
-            $play = $this->getInfos()[$this->getPlay()[0]]['play'];
+            $play = $this->getInfos(true)[$this->getPlay()[0]]['play'];
             $glue = self::getGlue();
             $src = self::getSrc() . $glue[0] . $play; // Stick player URL and ID.
 
@@ -723,6 +699,16 @@ namespace Oui\Player {
             );
 
             return ($wraptag) ? doTag($player, $wraptag, $class, $wrapstyle) : $player;
+        }
+
+        public static function renderPlayer($atts)
+        {
+            return Player::renderPlayer(array_merge(array('provider' => self::getProvider()), $atts));
+        }
+
+        public static function renderIfPlayer($atts, $thing)
+        {
+            return Player::renderIfPlayer(array_merge(array('provider' => self::getProvider()), $atts), $thing);
         }
     }
 }
