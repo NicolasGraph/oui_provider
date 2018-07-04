@@ -86,7 +86,8 @@ h3. Changelog
 * *oui_provider v1.0.0-BETA3* (2018-07-04)
 ** Added: HTML5 validation;
 ** changed: now works as an extension base for _oui_player_; any plugin extending the @\Oui\Provider@ class in an author prefix related namespace will be plugged into _oui_player_;
-** added: manage responsive embedding.
+** added: manages responsive embedding;
+** changed: does not return any player if there is nothing to play (triggers an error);
 ** Changed: code rework:
 *** uses an author prefix related namespace;
 *** declares providers related dedicated tags;
