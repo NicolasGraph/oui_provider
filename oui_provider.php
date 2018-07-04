@@ -644,6 +644,8 @@ namespace Oui {
                 return $src;
             }
 
+            trigger_error('Nothing to play');
+
             return false;
         }
 
