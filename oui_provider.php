@@ -628,19 +628,23 @@ namespace Oui {
 
         protected function getPlaySrc()
         {
-            $play = $this->getInfos(true)[$this->getPlay()[0]]['play'];
-            $glue = self::getGlue();
-            $src = self::getSrc() . $glue[0] . $play; // Stick player URL and ID.
+            if ($this->getPlay()[0]) {
+                $play = $this->getInfos(true)[$this->getPlay()[0]]['play'];
+                $glue = self::getGlue();
+                $src = self::getSrc() . $glue[0] . $play; // Stick player URL and ID.
 
-            // Stick defined player parameters.
-            $params = $this->getPlayerParams();
+                // Stick defined player parameters.
+                $params = $this->getPlayerParams();
 
-            if (!empty($params)) {
-                $joint = strpos($src, $glue[1]) ? $glue[2] : $glue[1]; // Avoid repeated glue elements (interrogation marks).
-                $src .= $joint . implode($glue[2], $params); // Stick.
+                if (!empty($params)) {
+                    $joint = strpos($src, $glue[1]) ? $glue[2] : $glue[1]; // Avoid repeated glue elements (interrogation marks).
+                    $src .= $joint . implode($glue[2], $params); // Stick.
+                }
+
+                return $src;
             }
 
-            return $src;
+            return false;
         }
 
         /**
@@ -660,45 +664,48 @@ namespace Oui {
             }
 
             $src = $this->getPlaySrc();
-            $dims = $this->getSize();
 
-            extract($dims);
+            if ($src) {
+                $dims = $this->getSize();
 
-            // Define responsive related styles.
-            $responsive = $this->getResponsive();
-            $style = 'style="border: none';
-            $wrapstyle = '';
+                extract($dims);
 
-            if ($this->getResponsive()) {
-                $style .= '; position: absolute; top: 0; left: 0; width: 100%; height: 100%';
-                $wrapstyle .= 'style="position: relative; padding-bottom:' . $height . '; height: 0; overflow: hidden"';
-                $width = $height = false;
-                $wraptag or $wraptag = 'div';
-            } else {
-                if (is_string($width)) {
-                    $style .= '; width:' . $width;
-                    $width = false;
+                // Define responsive related styles.
+                $responsive = $this->getResponsive();
+                $style = 'style="border: none';
+                $wrapstyle = '';
+
+                if ($this->getResponsive()) {
+                    $style .= '; position: absolute; top: 0; left: 0; width: 100%; height: 100%';
+                    $wrapstyle .= 'style="position: relative; padding-bottom:' . $height . '; height: 0; overflow: hidden"';
+                    $width = $height = false;
+                    $wraptag or $wraptag = 'div';
+                } else {
+                    if (is_string($width)) {
+                        $style .= '; width:' . $width;
+                        $width = false;
+                    }
+
+                    if (is_string($height)) {
+                        $style .= '; height:' . $height;
+                        $height = false;
+                    }
                 }
 
-                if (is_string($height)) {
-                    $style .= '; height:' . $height;
-                    $height = false;
-                }
+                $style .= '"';
+
+                // Build the player code.
+                $player = sprintf(
+                    '<iframe src="%s"%s%s %s %s></iframe>',
+                    $this->getPlaySrc(),
+                    !$width ? '' : ' width="' . $width . '"',
+                    !$height ? '' : ' height="' . $height . '"',
+                    $style,
+                    'allowfullscreen'
+                );
+
+                return ($wraptag) ? doTag($player, $wraptag, $class, $wrapstyle) : $player;
             }
-
-            $style .= '"';
-
-            // Build the player code.
-            $player = sprintf(
-                '<iframe src="%s"%s%s %s %s></iframe>',
-                $this->getPlaySrc(),
-                !$width ? '' : ' width="' . $width . '"',
-                !$height ? '' : ' height="' . $height . '"',
-                $style,
-                'allowfullscreen'
-            );
-
-            return ($wraptag) ? doTag($player, $wraptag, $class, $wrapstyle) : $player;
         }
 
         public static function renderPlayer($atts)
