@@ -389,6 +389,7 @@ namespace Oui {
             $merge_prefs = array_merge(self::getDims(), self::getParams());
 
             foreach ($merge_prefs as $pref => $options) {
+                is_array($options) ?: $options = array('default' => $options);
                 $options['group'] = Player::getPlugin() . '_' . self::getProvider();
                 $prefs[$options['group'] . '_' . $pref] = $options;
             }
