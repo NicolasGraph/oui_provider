@@ -503,7 +503,7 @@ namespace Oui {
 
             foreach (self::getParams() as $param => $infos) {
                 $pref = get_pref(Player::getPlugin() . '_' . self::getProvider() . '_' . $param);
-                $default = $infos['default'];
+                $default = is_array($infos) ? $infos['default'] : $infos;
                 $att = str_replace('-', '_', $param);
                 $value = isset($config[$att]) ? $config[$att] : '';
 
