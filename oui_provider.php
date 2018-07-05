@@ -506,7 +506,9 @@ namespace Oui {
                 if ($value === '' && ($pref !== $default || isset($infos['force']))) {
                     $params[] = $param . '=' . str_replace('#', '', $pref); // Remove the hash from the color pref as a color type is used for the pref input.
                 } elseif ($value !== '') {
-                    if (!$valid || $valid && in_array($value, $valid)) {
+                    $validArray = is_array($valid);
+
+                    if (!$validArray || $validArray && in_array($value, $valid)) {
                         $params[] = $param . '=' . str_replace('#', '', $value); // Remove the hash in the color attribute just in case…
                     } else {
                         trigger_error('Unknown attribute value for "' . $att . '". Valid values are: "' . implode('", "', $valid) . '".');
