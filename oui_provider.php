@@ -699,7 +699,7 @@ namespace Oui {
                 // Build the player code.
                 $player = sprintf(
                     '<iframe src="%s"%s%s %s %s></iframe>',
-                    $this->getPlaySrc(),
+                    $src,
                     !$width ? '' : ' width="' . $width . '"',
                     !$height ? '' : ' height="' . $height . '"',
                     $style,
