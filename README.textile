@@ -3,9 +3,27 @@ h1. oui_provider
 h2. Introduction
 
 Extension base oui_player v2+.
-See oui_player"oui_player":https://github.com/NicolasGraph/oui_player for more informations.
+See "oui_player":https://github.com/NicolasGraph/oui_player for more informations.
 
-p(alert-block information). %(ui-icon ui-icon-info).% This plugin does not use oembed, it builds iframe embedding codes and HTML5 players by its own without any external request for better performances.
+h3. Supported extensions
+
+As known at the last plugin release…
+
+* "Abc News":http://abcnews.go.com/video: "oui_abcnews":https://github.com/NicolasGraph/oui_abcnews;
+* "Archive":https://archive.org/: "oui_archive":https://github.com/NicolasGraph/oui_archive;
+* "Bandcamp":https://bandcamp.com/: "oui_bandcamp":https://github.com/NicolasGraph/oui_bandcamp;
+* "Dailymotion":http://www.dailymotion.com/: "oui_dailymotion":https://github.com/NicolasGraph/oui_dailymotion;
+* "Giphy":https://giphy.com/: "oui_giphy":https://github.com/NicolasGraph/oui_giphy;
+* "HTML5 audio":https://developer.mozilla.org/docs/Web/HTML/Element/audio: "oui_audio":https://github.com/NicolasGraph/oui_audio;
+* "HTML5 video":https://developer.mozilla.org/docs/Web/HTML/Element/video: "oui_video":https://github.com/NicolasGraph/oui_video;
+* "Mixcloud":https://www.mixcloud.com/: "oui_mixcloud":https://github.com/NicolasGraph/oui_mixcloud;
+* "Myspace videos":https://myspace.com/myspace/videos: "oui_myspace":https://github.com/NicolasGraph/oui_myspace;
+* "Soundcloud":https://soundcloud.com/: "oui_soundcloud":https://github.com/NicolasGraph/oui_soundcloud;
+* "Twitch":https://www.twitch.tv/: "oui_twitch":https://github.com/NicolasGraph/oui_twitch;
+* "Viddsee":https://www.viddsee.com/: "oui_viddsee":https://github.com/NicolasGraph/oui_viddsee;
+* "Vimeo":http://www.vimeo.com/: "oui_vimeo":https://github.com/NicolasGraph/oui_vimeo;
+* "Vine":http://vine.co/: "oui_vine":https://github.com/NicolasGraph/oui_vine;
+* "Youtube":https://www.youtube.com/: "oui_youtube":https://github.com/NicolasGraph/oui_youtube.
 
 h3. Plugin requirements
 
@@ -66,6 +84,81 @@ h4. Via Composer (not available yet)
 
 bc. $ composer remove nicolasgraph/oui_player
 
+h2. Extension creation
+
+h3. Instructions
+
+A provider related extension can be created by extending the @Oui\Provider@ class in a plugin author prefix related namespace.
+As oui_provider may be not installed yet while enabling the new extension; it seems safe to wrap the new child class in a related condition clause.
+Once the class created, in most cases, it should only require to override some static properties.
+
+h4. Properties
+
+- @patterns@ := Associative array of @'scheme'@, as a RegEx to check against media URL's, and @'id'@, as the index of the media ID in potential matches.
+Multiple @$patterns@ can be defined through a multidimensional array. In this case, two optional subkeys can be useful: @prefix@ defines a string to prepend to the matched media ID, and @glue@ defines a string to append to the ID if multiple schemes can be matched at once. =:
+- @src@ := URL base of the provider player. =:
+- @glue@ := Array of three strings to append, between the URL player base and media info, between the media info and the player parameters, and finally, between the player parameters.
+- @dims@ := Associative array of @'width'@, @'height'@ and @'ratio'@ values as strings.
+- @params@ := Associative array of player paramaters and their related @'default'@ value and @'valid'@ values.
+Player parameters are used to set plugin preferences and tag attributes.
+@'valid'@ values can be set to an array of strings or to a valid input type used for the plugin preference.
+If an optional @force@ key is set, the parameter will be used by the player even if its value is set to the default one. =:
+
+h3. Example
+
+bc.. namespace Oui {
+
+    if (class_exists('Oui\Provider')) {
+
+        class Bandcamp extends Provider
+        {
+            protected static $patterns = array(
+                'album' => array(
+                    'scheme' => '#((http|https)://bandcamp\.com/(EmbeddedPlayer/)?album=(\d+)/?)#i',
+                    'id'     => 4,
+                    'prefix' => 'album=',
+                    'glue' => '/',
+                ),
+                'track' => array(
+                    'scheme' => '#((http|https)://bandcamp\.com/(EmbeddedPlayer/)?[\S]+track=(\d+)/?)#i',
+                    'id'     => 4,
+                    'prefix' => 'track=',
+                ),
+            );
+            protected static $src = '//bandcamp.com/';
+            protected static $glue = array('EmbeddedPlayer/', '/', '/');
+            protected static $dims = array(
+                'width'  => '350',
+                'height' => '470',
+                'ratio'  => '',
+            );
+            protected static $params = array(
+                'size'      => array(
+                    'default' => 'large',
+                    'force'   => true,
+                    'valid'   => array('large', 'small'),
+                ),
+                'artwork'   => array(
+                    'default' => '',
+                    'valid'   => array('', 'none', 'big', 'small'),
+                ),
+                'bgcol'     => array(
+                    'default' => '#ffffff',
+                    'valid'   => 'color',
+                ),
+                'linkcol'   => array(
+                    'default' => '#0687f5',
+                    'valid'   => 'color',
+                ),
+                'tracklist' => array(
+                    'default' => 'true',
+                    'valid'   => array('true', 'false'),
+                ),
+            );
+        }
+    }
+}
+
 h2. Credits
 
 h3. Author
@@ -88,7 +181,7 @@ h3. Changelog
 ** changed: now works as an extension base for _oui_player_; any plugin extending the @\Oui\Provider@ class in an author prefix related namespace will be plugged into _oui_player_;
 ** added: manages responsive embedding;
 ** changed: does not return any player if there is nothing to play (triggers an error);
-** Changed: code rework:
+** changed: code rework:
 *** uses an author prefix related namespace;
 *** declares providers related dedicated tags;
 *** instances created/get via @Txp::get()@;
