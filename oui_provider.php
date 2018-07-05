@@ -498,7 +498,6 @@ namespace Oui {
             foreach (self::getParams() as $param => $infos) {
                 $pref = get_pref(Player::getPlugin() . '_' . self::getProvider() . '_' . $param);
                 $default = is_array($infos) ? $infos['default'] : $infos;
-                $validArray = isset($infos['valid']) && is_array($infos['valid']) ? $infos['valid'] : '';
                 $att = str_replace('-', '_', $param);
                 $value = isset($config[$att]) ? $config[$att] : '';
 
@@ -506,6 +505,8 @@ namespace Oui {
                 if ($value === '' && ($pref !== $default || isset($infos['force']))) {
                     $params[] = $param . '=' . str_replace('#', '', $pref); // Remove the hash from the color pref as a color type is used for the pref input.
                 } elseif ($value !== '') {
+                    $validArray = isset($infos['valid']) && is_array($infos['valid']) ? $infos['valid'] : '';
+
                     if (!$validArray || $validArray && in_array($value, $validArray)) {
                         $params[] = $param . '=' . str_replace('#', '', $value); // Remove the hash in the color attribute just in case…
                     } else {
