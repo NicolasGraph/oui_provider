@@ -316,7 +316,7 @@ namespace Oui {
 
         protected static function getPatterns()
         {
-            return array_keys_exists('scheme', static::$patterns) ? array('undefined' => static::$patterns) : static::$patterns;
+            return array_key_exists('scheme', static::$patterns) ? array('undefined' => static::$patterns) : static::$patterns;
         }
 
         /**
