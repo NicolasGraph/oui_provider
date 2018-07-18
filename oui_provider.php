@@ -43,6 +43,15 @@ namespace Oui {
         protected static $provider;
 
         /**
+         * The media type provided.
+         *
+         * @var string
+         * @see getMediaType().
+         */
+
+        protected static $mediaType = 'video';
+
+        /**
          * The value provided through the play attribute.
          *
          * @var string
@@ -319,6 +328,18 @@ namespace Oui {
         {
             return static::$params;
         }
+
+        /**
+         * $mediaType property getter.
+         *
+         * @return string
+         */
+
+        protected static function getMediaType()
+        {
+            return static::$mediaType;
+        }
+
 
         /**
          * $patterns property getter.
@@ -721,7 +742,7 @@ namespace Oui {
 
                 if ($this->getMicrodata()) {
                     $wrapstyle ? $wrapData .= ' ' : '';
-                    $wrapData .= 'itemscope itemtype="http://schema.org/MediaObject"';
+                    $wrapData .= 'itemscope itemtype="http://schema.org/' . ucfirst(self::getMediaType()) . 'Object"';
                     $player .= n . '<meta itemprop="embedURL" content="' . $src . '" />';
                 }
 
