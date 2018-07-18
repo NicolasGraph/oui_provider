@@ -721,7 +721,7 @@ namespace Oui {
 
                 if ($this->getMicrodata()) {
                     $wrapstyle ? $wrapData .= ' ' : '';
-                    $wrapData .= 'itemscope itemtype="http://schema.org/VideoObject"';
+                    $wrapData .= 'itemscope itemtype="http://schema.org/MediaObject"';
                     $player .= n . '<meta itemprop="embedURL" content="' . $src . '" />';
                 }
 
