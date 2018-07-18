@@ -674,7 +674,6 @@ namespace Oui {
                 extract($dims);
 
                 // Define responsive related styles.
-                $responsive = $this->getResponsive();
                 $style = 'style="border: none';
                 $wrapstyle = '';
 
