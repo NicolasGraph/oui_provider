@@ -188,6 +188,18 @@ namespace Oui {
         }
 
         /**
+         * $microdata property getter.
+         *
+         * @return bool
+         */
+
+        protected function getMicrodata() {
+            $att = $this->getConfig('microdata');
+
+            return $att ? $att === 'true' ? true : false : get_pref('oui_player_microdata') === 'true';
+        }
+
+        /**
          * $play property setter.
          *
          * @return object $this.
@@ -681,7 +693,6 @@ namespace Oui {
                     $style .= '; position: absolute; top: 0; left: 0; width: 100%; height: 100%';
                     $wrapstyle .= 'style="position: relative; padding-bottom:' . $height . '; height: 0; overflow: hidden"';
                     $width = $height = false;
-                    $wraptag or $wraptag = 'div';
                 } else {
                     if (is_string($width)) {
                         $style .= '; width:' . $width;
@@ -706,7 +717,18 @@ namespace Oui {
                     'allowfullscreen'
                 );
 
-                return ($wraptag) ? doTag($player, $wraptag, $class, $wrapstyle) : $player;
+                $wrapData = '';
+
+                if ($this->getMicrodata()) {
+                    $wrapstyle ? $wrapData .= ' ' : '';
+                    $wrapData .= 'itemscope itemtype="http://schema.org/VideoObject"';
+                    $player .= n . '<meta itemprop="embedURL" content="' . $src . '" />';
+                }
+
+                $wrapstyle || $wrapData && !$wraptag ? $wraptag = 'div' : '';
+                $wraptag ? $player = n . $player . n : '';
+
+                return ($wraptag) ? doTag($player, $wraptag, $class, $wrapstyle . $wrapData) : $player;
             }
         }
 
