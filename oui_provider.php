@@ -223,7 +223,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
     }
 
     /**
-     * $responsive property getter.
+     * $label property getter.
      *
      * @return object $this
      */
@@ -235,7 +235,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
     }
 
     /**
-     * $responsive property getter.
+     * $label property getter.
      *
      * @return array
      */
@@ -245,7 +245,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
     }
 
     /**
-     * $responsive property getter.
+     * $wrap property getter.
      *
      * @return object $this
      */
@@ -257,7 +257,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
     }
 
     /**
-     * $responsive property getter.
+     * $wrap property getter.
      *
      * @return array
      */
