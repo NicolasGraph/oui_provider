@@ -679,7 +679,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
         $atts = compact('width', 'height', 'ratio');
 
         foreach (self::getIniDims() as $dim => $value) {
-            is_bool($atts[$dim]) ? $$dim = '0' : '';
+            is_bool($atts[$dim]) ? $atts[$dim] = '00' : '';
 
             $$dim = str_replace(' ', '', $atts[$dim] ? $atts[$dim] : $this->getPref($dim));
 
