@@ -870,7 +870,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
 
     final public function render()
     {
-        return pluggable_ui(Player::getPlugin(), strtolower(self::getProvider()), $this->getHTML(), $this);;
+        return pluggable_ui(Player::getPlugin(), strtolower(self::getProvider()), $this->getHTML(), $this);
     }
 
     /**
