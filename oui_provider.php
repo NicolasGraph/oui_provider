@@ -78,9 +78,13 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
      */
 
     protected static $iniDims = array(
-        'width'  => '640',
-        'height' => '',
-        'ratio'  => '16:9',
+        'width'      => '640',
+        'height'     => '',
+        'ratio'      => '16:9',
+        'responsive' => array(
+            'default' => 'false',
+            'valid'   => array('true', 'false'),
+        ),
     );
 
     /**
@@ -679,14 +683,16 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
         $atts = compact('width', 'height', 'ratio');
 
         foreach (self::getIniDims() as $dim => $value) {
-            is_bool($atts[$dim]) ? $atts[$dim] = '00' : '';
+            if ($dim !== 'responsive') {
+                is_bool($atts[$dim]) ? $atts[$dim] = '00' : '';
 
-            $$dim = str_replace(' ', '', $atts[$dim] ? $atts[$dim] : $this->getPref($dim));
+                $$dim = str_replace(' ', '', $atts[$dim] ? $atts[$dim] : $this->getPref($dim));
 
-            if ($dim !== 'ratio') {
-                $dUnit = $dim[0] . 'Unit';
-                preg_match("/\D+/", $$dim, $$dUnit) ? $$dUnit = $$dUnit[0] : '';
-                $$dim = (int) $$dim;
+                if ($dim !== 'ratio') {
+                    $dUnit = $dim[0] . 'Unit';
+                    preg_match("/\D+/", $$dim, $$dUnit) ? $$dUnit = $$dUnit[0] : '';
+                    $$dim = (int) $$dim;
+                }
             }
         }
 
@@ -712,7 +718,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
 
         // Calculate player width and/or height.
         if ($responsive === null) {
-            $responsive = get_pref('oui_player_responsive') === 'true';
+            $responsive = $this->getPref('responsive') === 'true';
         } else {
             $responsive = $responsive ? true : false;
         }
