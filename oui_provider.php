@@ -734,8 +734,6 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
                     trigger_error(gtxt('undefined_player_size'));
                 }
             }
-
-            $width = '100%';
         } else {
             if (isset($height) && (!$width || !$height)) {
                 if ($aspect) {
@@ -833,10 +831,16 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
         // Define responsive related styles.
         $style = 'style="border: none';
         $wrapStyle = '';
+        $maxWidth = '';
 
         if ($responsive) {
             $style .= '; position: absolute; top: 0; left: 0; width: 100%; height: 100%';
             $wrapStyle .= 'style="position: relative; padding-bottom:' . $height . '; height: 0; overflow: hidden"';
+
+            if ($width !== '100%') {
+                $maxWidth = is_string($width) ? $width : $width . 'px';
+            }
+
             $width = $height = false;
         } else {
             foreach (array('width', 'height') as $dim) {
@@ -867,7 +871,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
 
         $out = doLabel($label, $labeltag) . n . doTag($player, $wraptag, $class, $wrapStyle);
 
-        return $out;
+        return $maxWidth ? $out = '<div style="max-width: ' . $maxWidth. '">' . $out . '</div>' : $out;
     }
 
     /**
