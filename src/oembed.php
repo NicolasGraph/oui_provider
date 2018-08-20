@@ -33,36 +33,79 @@ namespace Oui\Player;
 
 abstract class Oembed extends Provider
 {
+    /**
+     * JSON related API endpoint.
+     * It should just need the URL to be appended.
+     *
+     * @var string
+     */
+
     protected static $endPoint = 'https://vimeo.com/api/oembed.json?url=';
+
+    /**
+     * Provider URL
+     *
+     * @var string
+     */
 
     protected static $URLBase = 'http://vimeo.com/';
 
+    /**
+     * OEmbed data
+     *
+     * @var string
+     */
+
     protected $data;
+
+    /**
+     * $endPoint getter.
+     */
 
     protected static function getEndPoint()
     {
         return static::$endPoint;
     }
 
+    /**
+     * $URLBase getter.
+     */
+
     protected static function getURLBase()
     {
         return static::$URLBase;
     }
+
+    /**
+     * Build media URL.
+     */
 
     protected function getMediaURL()
     {
         return self::getURLBase() . $this->getMediaInfos()[$this->getMedia()]['uri'];
     }
 
+    /**
+     * $data setter
+     */
+
     protected function setData()
     {
         $this->data = json_decode(file_get_contents(self::getEndPoint() . $this->getMediaURL()));
     }
 
+    /**
+     * $data unsetter
+     */
+
     protected function unsetData()
     {
         $this->data = null;
     }
+
+    /**
+     * $data getter
+     */
 
     protected function getData($name)
     {
