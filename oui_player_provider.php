@@ -891,7 +891,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
     {
         $atts['provider'] = self::getProvider();
 
-        return \Txp::get('\Oui\Player')->renderPlayer($atts);
+        return \Txp::get('\Oui\Player\Player')->renderPlayer($atts);
     }
 
     /**
@@ -902,6 +902,6 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
     {
         $atts['provider'] = self::getProvider();
 
-        return \Txp::get('\Oui\Player')->renderIfPlayer($atts, $thing);
+        return \Txp::get('\Oui\Player\Player')->renderIfPlayer($atts, $thing);
     }
 }
