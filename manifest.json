@@ -6,5 +6,9 @@
     "author"      : "Nicolas Morand",
     "author_uri"  : "http://github.com/NicolasGraph",
     "order"       : 3,
-    "flags"       : 0
+    "flags"       : 0,
+    "code": {"file" : [
+        "./src/Provider.php",
+        "./src/Oembed.php"
+    ]}
 }
