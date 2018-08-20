@@ -690,7 +690,7 @@ abstract class Provider implements \Textpattern\Container\ReusableInterface
 
                 if ($dim !== 'ratio') {
                     $dUnit = $dim[0] . 'Unit';
-                    preg_match("/\D+/", $$dim, $$dUnit) ? $$dUnit = $$dUnit[0] : '';
+                    $$dUnit = preg_match("/\D+/", $$dim, $match) ? $match[0] : '';
                     $$dim = (int) $$dim;
                 }
             }
