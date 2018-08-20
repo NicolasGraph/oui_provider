@@ -1,4 +1,4 @@
-h1. oui_provider
+h1. oui_player_provider
 
 h2. Introduction
 
@@ -89,7 +89,7 @@ h2. Extension creation
 h3. Instructions
 
 A provider related extension can be created by extending the @Oui\Provider@ class in a plugin author prefix related namespace.
-As oui_provider may be not installed yet while enabling the new extension; it seems safe to wrap the new child class in a related condition clause.
+As oui_player_provider may be not installed yet while enabling the new extension; it seems safe to wrap the new child class in a related condition clause.
 Once the class created, in most cases, it should only require to override some static properties.
 
 h4. Properties
@@ -170,13 +170,13 @@ h3. License
 
 This plugin is distributed under "GPL v2.0":https://www.gnu.org/licenses/gpl-2.0.txt.
 
-oui_provider version 1.0.0-BETA4, Copyright (C) 2018 Nicolas Morand
+oui_player_provider version 1.0.0-BETA4, Copyright (C) 2018 Nicolas Morand
 This Textpattern plugin comes with ABSOLUTELY "NO WARRANTY":https://www.gnu.org/licenses/gpl-2.0.html#section11.
 This is free software, and you are welcome to redistribute it "under certain conditions":https://www.gnu.org/licenses/gpl-2.0.html#SEC3.
 
 h3. Changelog
 
-* *oui_provider v1.0.0-BETA4* (2018-08-15)
+* *oui_player_provider v1.0.0-BETA4* (2018-08-15)
 ** Added: pluggable_ui related callback on each rendered player;
 ** Added: HTML5 validation;
 ** changed: now works as an extension base for _oui_player_; any plugin extending the @\Oui\Provider@ class in an author prefix related namespace will be plugged into _oui_player_;

@@ -1,11 +1,11 @@
 <?php
 
 /*
- * This file is part of oui_provider,
+ * This file is part of oui_player_provider,
  * an extendable plugin to easily embed
  * customizable players in Textpattern CMS.
  *
- * https://github.com/NicolasGraph/oui_provider
+ * https://github.com/NicolasGraph/oui_player_provider
  *
  * Copyright (C) 2018 Nicolas Morand
  *
@@ -29,7 +29,7 @@
  * @package Oui\Player
  */
 
-namespace Oui;
+namespace Oui\Player;
 
 abstract class Provider implements \Textpattern\Container\ReusableInterface
 {
