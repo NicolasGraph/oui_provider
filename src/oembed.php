@@ -31,7 +31,7 @@
 
 namespace Oui\Player;
 
-abstract class OEmbed extends Provider
+abstract class OEmbed extends Embed
 {
     /**
      * JSON related API endpoint.
