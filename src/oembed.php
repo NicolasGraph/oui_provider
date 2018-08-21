@@ -31,16 +31,15 @@
 
 namespace Oui\Player;
 
-abstract class Oembed extends Provider
+abstract class OEmbed extends Provider
 {
     /**
      * JSON related API endpoint.
-     * It should just need the URL to be appended.
      *
      * @var string
      */
 
-    protected static $endPoint = 'https://vimeo.com/api/oembed.json?url=';
+    protected static $endPoint;
 
     /**
      * Provider URL
@@ -48,7 +47,7 @@ abstract class Oembed extends Provider
      * @var string
      */
 
-    protected static $URLBase = 'http://vimeo.com/';
+    protected static $URLBase;
 
     /**
      * OEmbed data
@@ -62,7 +61,7 @@ abstract class Oembed extends Provider
      * $endPoint getter.
      */
 
-    protected static function getEndPoint()
+    final protected static function getEndPoint()
     {
         return static::$endPoint;
     }
@@ -71,7 +70,7 @@ abstract class Oembed extends Provider
      * $URLBase getter.
      */
 
-    protected static function getURLBase()
+    final protected static function getURLBase()
     {
         return static::$URLBase;
     }
@@ -80,7 +79,7 @@ abstract class Oembed extends Provider
      * Build media URL.
      */
 
-    protected function getMediaURL()
+    final protected function getMediaURL()
     {
         return self::getURLBase() . $this->getMediaInfos()[$this->getMedia()]['uri'];
     }
@@ -89,16 +88,27 @@ abstract class Oembed extends Provider
      * $data setter
      */
 
-    protected function setData()
+    final protected function setData()
     {
-        $this->data = json_decode(file_get_contents(self::getEndPoint() . $this->getMediaURL()));
+        $url = self::getEndPoint() . '?url=' . $this->getMediaURL();
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+
+        $this->data = json_decode(curl_exec($curl));
+
+        curl_close($curl);
+
+        // $this->data = json_decode(file_get_contents($url));
     }
 
     /**
      * $data unsetter
      */
 
-    protected function unsetData()
+    final protected function unsetData()
     {
         $this->data = null;
     }
@@ -107,7 +117,7 @@ abstract class Oembed extends Provider
      * $data getter
      */
 
-    protected function getData($name)
+    final protected function getData($name)
     {
         $this->data or $this->setData();
 

@@ -31,7 +31,7 @@
 
 namespace Oui\Player;
 
-abstract class Provider implements \Textpattern\Container\ReusableInterface
+abstract class Embed implements \Textpattern\Container\ReusableInterface
 {
     /**
      * The provider name (set from the class name).
