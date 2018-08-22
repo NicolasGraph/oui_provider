@@ -791,7 +791,7 @@ abstract class Embed implements \Textpattern\Container\ReusableInterface
      * @return string
      */
 
-    final protected function getSrc()
+    protected function getSrc()
     {
         $media = $this->getMedia();
 
