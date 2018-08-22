@@ -66,7 +66,6 @@ h3. Update
 h4. From the admin interface
 
 Follow the install instructions.
-If you are updating from v1.*, be sure to install all wanted extensions before to visit the "Admin > Preferences":?event=prefs#prefs_group_oui_player tab to keep your preference values untouched.
 
 h4. Via Composer (not available yet)
 
@@ -86,78 +85,8 @@ bc. $ composer remove nicolasgraph/oui_player
 
 h2. Extension creation
 
-h3. Instructions
-
-A provider related extension can be created by extending the @Oui\Provider@ class in a plugin author prefix related namespace.
-As oui_player_provider may be not installed yet while enabling the new extension; it seems safe to wrap the new child class in a related condition clause.
+A provider related extension can be created as a Textpattern plugin by using a class named like the new provider and extending either @Oui\Player\Embed@ or its child @Oui\Player\OEmbed@ in a plugin author prefix related namespace (e.g. @namespace Oui;@).
 Once the class created, in most cases, it should only require to override some static properties.
-
-h4. Properties
-
-- @patterns@ := Associative array of @'scheme'@, as a RegEx to check against media URL's, and @'id'@, as the index of the media ID in potential matches.
-Multiple @$patterns@ can be defined through a multidimensional array. In this case, two optional subkeys can be useful: @prefix@ defines a string to prepend to the matched media ID, and @glue@ defines a string to append to the ID if multiple schemes can be matched at once. =:
-- @src@ := URL base of the provider player. =:
-- @glue@ := Array of three strings to append, between the URL player base and media info, between the media info and the player parameters, and finally, between the player parameters.
-- @dims@ := Associative array of @'width'@, @'height'@ and @'ratio'@ values as strings.
-- @params@ := Associative array of player paramaters and their related @'default'@ value and @'valid'@ values.
-Player parameters are used to set plugin preferences and tag attributes.
-@'valid'@ values can be set to an array of strings or to a valid input type used for the plugin preference.
-If an optional @force@ key is set, the parameter will be used by the player even if its value is set to the default one. =:
-
-h3. Example
-
-bc.. namespace Oui {
-
-    if (class_exists('Oui\Provider')) {
-
-        class Bandcamp extends Provider
-        {
-            protected static $patterns = array(
-                'album' => array(
-                    'scheme' => '#((http|https)://bandcamp\.com/(EmbeddedPlayer/)?album=(\d+)/?)#i',
-                    'id'     => 4,
-                    'prefix' => 'album=',
-                    'glue' => '/',
-                ),
-                'track' => array(
-                    'scheme' => '#((http|https)://bandcamp\.com/(EmbeddedPlayer/)?[\S]+track=(\d+)/?)#i',
-                    'id'     => 4,
-                    'prefix' => 'track=',
-                ),
-            );
-            protected static $src = '//bandcamp.com/';
-            protected static $glue = array('EmbeddedPlayer/', '/', '/');
-            protected static $dims = array(
-                'width'  => '350',
-                'height' => '470',
-                'ratio'  => '',
-            );
-            protected static $params = array(
-                'size'      => array(
-                    'default' => 'large',
-                    'force'   => true,
-                    'valid'   => array('large', 'small'),
-                ),
-                'artwork'   => array(
-                    'default' => '',
-                    'valid'   => array('', 'none', 'big', 'small'),
-                ),
-                'bgcol'     => array(
-                    'default' => '#ffffff',
-                    'valid'   => 'color',
-                ),
-                'linkcol'   => array(
-                    'default' => '#0687f5',
-                    'valid'   => 'color',
-                ),
-                'tracklist' => array(
-                    'default' => 'true',
-                    'valid'   => array('true', 'false'),
-                ),
-            );
-        }
-    }
-}
 
 h2. Credits
 
@@ -170,13 +99,13 @@ h3. License
 
 This plugin is distributed under "GPL v2.0":https://www.gnu.org/licenses/gpl-2.0.txt.
 
-oui_player_provider version 1.0.0-BETA4, Copyright (C) 2018 Nicolas Morand
+oui_player_provider version 1.0.0, Copyright (C) 2018 Nicolas Morand
 This Textpattern plugin comes with ABSOLUTELY "NO WARRANTY":https://www.gnu.org/licenses/gpl-2.0.html#section11.
 This is free software, and you are welcome to redistribute it "under certain conditions":https://www.gnu.org/licenses/gpl-2.0.html#SEC3.
 
 h3. Changelog
 
-* *oui_player_provider v1.0.0-BETA4* (2018-08-15)
+* *oui_player_provider v1.0.0* (2018-08-22)
 ** Added: pluggable_ui related callback on each rendered player;
 ** Added: HTML5 validation;
 ** changed: now works as an extension base for _oui_player_; any plugin extending the @\Oui\Provider@ class in an author prefix related namespace will be plugged into _oui_player_;
