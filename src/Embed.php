@@ -679,7 +679,7 @@ abstract class Embed implements \Textpattern\Container\ReusableInterface
 
         foreach (self::getIniDims() as $dim => $value) {
             if ($dim !== 'responsive') {
-                is_bool($atts[$dim]) ? $atts[$dim] = '00' : '';
+                is_bool($atts[$dim]) || $atts[$dim] === '' ? $atts[$dim] = '00' : '';
 
                 $$dim = str_replace(' ', '', $atts[$dim] ? $atts[$dim] : $this->getPref($dim));
 
