@@ -312,13 +312,15 @@ abstract class Embed implements \Textpattern\Container\ReusableInterface
             $attName = str_replace('-', '_', $param);
             isset($nameVals[$attName]) ? $att = $nameVals[$attName] : '';
 
-            if (isset($att) && $att !== $default) {
-                $this->params[$param] = $att;
-            } elseif (!isset($att) || $att !== $default && $pref !== $default || isset($infos['force'])) {
+            if (isset($att)) {
+                if ($att !== $default || isset($infos['force'])) {
+                    $this->params[$param] = $att;
+                }
+
+                unset($att);
+            } elseif ($pref !== $default || isset($infos['force'])) {
                 $this->params[$param] = $pref;
             }
-
-            unset($att);
         }
 
         return $this;
