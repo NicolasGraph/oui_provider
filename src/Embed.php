@@ -307,26 +307,18 @@ abstract class Embed implements \Textpattern\Container\ReusableInterface
         $this->params = array();
 
         foreach (self::getIniParams() as $param => $infos) {
-            $pref = $this->getPref($param);
+            $pref = str_replace('#', '', $this->getPref($param));
             $default = is_array($infos) ? $infos['default'] : $infos;
-            $att = str_replace('-', '_', $param);
-            $value = isset($nameVals[$att]) ? $nameVals[$att] : '';
+            $attName = str_replace('-', '_', $param);
+            isset($nameVals[$attName]) ? $att = $nameVals[$attName] : '';
 
-            // Add defined attribute values or modified preference values as player parameters.
-            if ($value === '' && ($pref !== $default || isset($infos['force']))) {
-                $this->params[$param] = str_replace('#', '', $pref); // Remove the hash from the color pref as a color type is used for the pref input.
-            } elseif ($value !== '') {
-                $validArray = isset($infos['valid']) && is_array($infos['valid']) ? $infos['valid'] : '';
-
-                if (!$validArray || $validArray && in_array($value, $validArray)) {
-                    $this->params[$param] = str_replace('#', '', $value); // Remove the hash in the color attribute just in case…
-                } else {
-                    trigger_error(
-                        'Unknown attribute or preference value for "' . $att .
-                        '". Valid values are: "' . implode('", "', $validArray) . '".'
-                    );
-                }
+            if (isset($att) && $att !== $default) {
+                $this->params[$param] = $att;
+            } elseif (!isset($att) || $att !== $default && $pref !== $default || isset($infos['force'])) {
+                $this->params[$param] = $pref;
             }
+
+            unset($att);
         }
 
         return $this;
@@ -724,12 +716,11 @@ abstract class Embed implements \Textpattern\Container\ReusableInterface
         }
 
         // Calculate player width and/or height.
-        if ($responsive === null) {
+        if ($responsive === '') {
             $responsive = $this->getPref('responsive') === 'true';
         } else {
             $responsive = $responsive ? true : false;
         }
-
 
         if ($responsive) {
             if ($aspect) {
